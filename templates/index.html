@@ -1,0 +1,51 @@
+<html>
+    <body>
+        <h2>ブラウザにQiita記事をしゃべらす</h2>
+        <form action="/", method="POST" enctype="multipart/form-data">
+            <input type="url" name="qiita_url">
+            <input type="submit" value="決定">
+        </form>
+        {% if context %}
+        <div>
+            <h4>{{context.title}}</h4>
+            <button id="speech-btn">再生</button>
+            <button id="cancel-btn">停止</button>
+            <button id="pause-btn">一時停止</button>
+            <button id="resume-btn">再開</button>
+            <p id="text">{{context.text}}</p>
+        </div>
+        {% endif %}
+    </body>
+
+    {% if context %}
+    <script>
+        const text      = document.getElementById("text").textContent
+        const speechBtn = document.querySelector('#speech-btn')
+        const cancelBtn = document.querySelector('#cancel-btn')
+        const pauseBtn  = document.querySelector('#pause-btn')
+        const resumeBtn = document.querySelector('#resume-btn')
+
+        // 再生
+        speechBtn.addEventListener('click', function() {
+        const uttr = new SpeechSynthesisUtterance(text)
+        speechSynthesis.speak(uttr)        
+        })
+
+        // 停止
+        cancelBtn.addEventListener('click', function() {
+            speechSynthesis.cancel()
+        })
+
+        // 一時停止
+        pauseBtn.addEventListener('click', function() {
+            speechSynthesis.pause()
+        })
+
+        // 再開
+        resumeBtn.addEventListener('click', function() {
+            speechSynthesis.resume()
+        })
+
+    </script>
+    {% endif %}
+</html>
